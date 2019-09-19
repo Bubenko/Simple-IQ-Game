@@ -18,12 +18,9 @@ function fireUP(){
   AREA.style.backgroundColor = "white";
 
   AREA.addEventListener('mousemove', mouseCoordinates, false);
-  
   CIRCLE.addEventListener('mouseenter', changeColorOnTouch, false);
   SQUARE.addEventListener('mouseenter', changeSqColorOnTouch, false);
-  
   CIRCLE.addEventListener('mouseleave', function(){CIRCLE.removeAttribute("style");}, false);
-
   SQUARE.addEventListener('mouseleave', function(){SQUARE.removeAttribute("style");}, false);
 }
 
@@ -48,6 +45,8 @@ function mouseCoordinates(e) {
         SQUARE.style.visibility = "hidden";
         FINISH.style.visibility = "visible";
         BODY.style.backgroundColor = "red";
+        pauseTimer();
+
     };
 
 }
@@ -65,57 +64,59 @@ function changeSqColorOnTouch() {
 }
 
 
+let timerResult = document.querySelector('.timerContainer');     
+let timerDisplay = document.querySelector('.timer');
+let finalTime = document.querySelector('.finalTime');
+let totalTime = document.querySelector('.finalTime');
 
+     let startTime;
+     let updatedTime;
+     let difference;
+     let tInterval;
+     let savedTime;
+     let paused = 0;
+     let running = 0;
+     
+     function startTimer(){
+       if(!running){
+         startTime = new Date().getTime();
+         tInterval = setInterval(getShowTime, 1);
+      
+         paused = 0;
+         running = 1;
+       }
+     }
 
-function changeValue() {
-    document.getElementById("timer").innerHTML = ++value;
-}
-  
-let timerInterval = null;
-function startTimer() {
-    stopTimer(); // stoping the previous counting (if any)
-    value = 0;
-    timerInterval = setInterval(changeValue, 1000);  
-  }
-
-function stopTimer() {
-    clearInterval(timerInterval);
-  }
-
-
-
-
-
-    let hour = 0;
-    let minute = 0;
-    let seconds = 0;
-    let totalSeconds = 0;
-    
-    let intervalId = null;
-    
-    function startTimer() {
-      ++totalSeconds;
-      hour = Math.floor(totalSeconds /3600);
-      minute = Math.floor((totalSeconds - hour*3600)/60);
-      seconds = totalSeconds - (hour*3600 + minute*60);
-  
-      document.getElementById("hour").innerHTML =hour;
-      document.getElementById("minute").innerHTML =minute;
-      document.getElementById("seconds").innerHTML =seconds;
-    };
-  
-    document.getElementById('start-btn').addEventListener('click', function() {
-        intervalId = setInterval(startTimer, 1000);
-      });
-    
-    document.getElementById('stop-btn').addEventListener('click', function() {
-        if (intervalId)
-          clearInterval(intervalId);
-      });
-
-      document.getElementById('reset-btn').addEventListener('click', function() {
-        totalSeconds = 0;
-        document.getElementById("hour").innerHTML = '0';
-        document.getElementById("minute").innerHTML = '0';
-        document.getElementById("seconds").innerHTML = '0';
-     });
+     function pauseTimer(){
+      if (!difference){
+        // if timer never started, don't allow pause button to do anything
+      } else if (!paused) {
+        clearInterval(tInterval);
+        savedTime = difference;
+        paused = 1;
+        running = 0;
+      
+      } else {// if the timer was already paused, when they click pause again, start the timer againstartTimer();
+      }
+    }
+     
+     
+     function getShowTime(){
+       updatedTime = new Date().getTime();
+       if (savedTime){
+         difference = (updatedTime - startTime) + savedTime;
+       } else {
+         difference =  updatedTime - startTime;
+       }
+       // var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+       var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+       var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+       var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+       var milliseconds = Math.floor((difference % (10 * 60)) / 1);
+       hours = (hours < 10) ? "0" + hours : hours;
+       minutes = (minutes < 10) ? "0" + minutes : minutes;
+       seconds = (seconds < 10) ? "0" + seconds : seconds;
+       milliseconds = (milliseconds < 100) ? (milliseconds < 10) ? "00" + milliseconds : "0" + milliseconds : milliseconds;
+       timerDisplay.innerHTML = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+       totalTime.innerHTML = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+     }

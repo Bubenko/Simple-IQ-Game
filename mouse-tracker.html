@@ -10,34 +10,21 @@
 </head>
 
 <body>
-    <p id="timer">0</p>
 
-    <!-- <div class="timer">
-        <div><span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span></div>
-    </div> -->
-
-
-    <div>Hour: <span id="hour"></span></div>
-    <div>Minute: <span id="minute"></span></div>
-    <div>Second: <span id="seconds"></span></div>
-    
-    <button id="start-btn">Start</button>
-    <button id="stop-btn">Stop</button>
-    <button id="reset-btn">Reset</button>
-
-
-    <!-- <button onclick="startTimer()">Start time</button>
-    <button onclick="stopTimer()">Stop time</button> -->
+    <div id="timerContainer">
+        <div class="timer"></div>
+    </div>
 
     <div class="start">
         <h1>Hello, this is very simple game.</h1> 
         <p>Let`s see how fast you can figure out what to do =)</p>
-        <button class="btnStart" value="Submit">Start</button>
+        <button class="btnStart btn" value="Submit" onclick="startTimer()">Start</button>
     </div>
     <div class="circle"></div>
     <div class="square"></div>
     <div class="finish">
         <h1>Nice job!</h1>
+        <p>Your total time is <b class="finalTime"></b></p>
         <button class="btn" value="Refresh Page" onClick="window.location.reload();"> Play Again</button>
         <p class="footer"><a href="https://www.linkedin.com/in/bubenko/" target="_blank">Made by Vladimir Bubenko</a></p>
     </div>
